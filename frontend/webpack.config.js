@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/index.jsx',
   output: {
     path: __dirname + '/public',
-    filename: './aoo.js'
+    filename: './app.js'
   },
   devServer: {
     port: 8080,
@@ -36,7 +36,7 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
       },
       {
-        test: /\.woff|.woff2|.tff|.eof|.svg*.*$/,
+        test: /\.woff|.woff2|.ttf|.eot|.svg*.*$/,
         loader: 'file'
       }
     ]

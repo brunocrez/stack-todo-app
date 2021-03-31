@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CHANGE_DESCRIPTION, CREATE_TODO, SEARCH_TODO } from './_todoTypes';
+import { CHANGE_DESCRIPTION, CLEAR_DESCRIPTION, SEARCH_TODO } from './_todoTypes';
 
 const API = 'http://localhost:3003/api/todos';
 
@@ -14,11 +14,12 @@ export function changeDescription(e) {
 
 // Action Creator
 export function getTodos() {
-  const response = axios.get(`${API}?sort=-createdAt`);
-
-  return {
-    type: SEARCH_TODO,
-    payload: response
+  return (dispatch, getState) => {
+    const description = getState().todo.description;
+    const filter = description ? `&description__regex=/${description}/i` : '';
+    axios
+      .get(`${API}?sort=-createdAt${filter}`)
+      .then(res => dispatch({ type: SEARCH_TODO, payload: res.data }));
   }
 }
 
@@ -27,7 +28,7 @@ export function createTodo(description) {
   return dispatch => {
       axios
         .post(API, { description })
-        .then(res => dispatch({ type: CREATE_TODO, payload: res.data }))
+        .then(res => dispatch({ type: CLEAR_DESCRIPTION, payload: res.data }))
         .then(() => dispatch(getTodos()));
     }
 }
@@ -57,5 +58,10 @@ export function removeTodo(item) {
         .delete(`${API}/${item._id}`)
         .then(() => dispatch(getTodos()));
     }
+}
+
+// Action Creator
+export function clearDescription() {
+  return [{ type: CLEAR_DESCRIPTION }, getTodos()];
 }
 

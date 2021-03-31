@@ -45,7 +45,17 @@ export function setTodoDone(item) {
 export function setTodoPending(item) {
   return dispatch => {
       axios
-      .put(`${API}/${item._id}`, { ...item, done: false })
-      .then(() => dispatch(getTodos()));
+        .put(`${API}/${item._id}`, { ...item, done: false })
+        .then(() => dispatch(getTodos()));
     }
 }
+
+// Action Creator
+export function removeTodo(item) {
+  return dispatch => {
+      axios
+        .delete(`${API}/${item._id}`)
+        .then(() => dispatch(getTodos()));
+    }
+}
+

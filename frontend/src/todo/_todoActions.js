@@ -28,6 +28,24 @@ export function createTodo(description) {
       axios
         .post(API, { description })
         .then(res => dispatch({ type: CREATE_TODO, payload: res.data }))
-        .then(() => dispatch(getTodos()))
+        .then(() => dispatch(getTodos()));
+    }
+}
+
+// Action Creator
+export function setTodoDone(item) {
+  return dispatch => {
+      axios
+        .put(`${API}/${item._id}`, { ...item, done: true })
+        .then(() => dispatch(getTodos()));
+    }
+}
+
+// Action Creator
+export function setTodoPending(item) {
+  return dispatch => {
+      axios
+      .put(`${API}/${item._id}`, { ...item, done: false })
+      .then(() => dispatch(getTodos()));
     }
 }

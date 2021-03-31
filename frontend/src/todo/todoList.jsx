@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import IconButton from '../template/iconButton';
+import { setTodoDone, setTodoPending } from './_todoActions';
 
 const TodoList = props => {
 
@@ -17,14 +19,14 @@ const TodoList = props => {
             tooltip="Concluir"
             style="success"
             icon="check"
-            onClick={() => props.handleMarkAsDone(item)}>
+            onClick={() => props.setTodoDone(item)}>
           </IconButton>
           <IconButton
             hide={!item.done}
             tooltip="Desfazer"
             style="warning"
             icon="undo"
-            onClick={() => props.handleMarkAsPending(item)}>
+            onClick={() => props.setTodoPending(item)}>
           </IconButton>
           <IconButton
             tooltip="Excluir"
@@ -58,4 +60,8 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(TodoList);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setTodoDone, setTodoPending }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
